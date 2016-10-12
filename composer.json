@@ -1,0 +1,46 @@
+{
+    "name": "toro/media-bundle",
+    "type": "symfony-bundle",
+    "description": "APIs management for Symfony2 projects.",
+    "keywords": ["media"],
+    "homepage": "https://github.com/intbizth/toro-media-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "liverbool",
+            "homepage": "https://github.com/liverbool"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0",
+
+        "doctrine/phpcr-bundle": "^1.3",
+        "helios-ag/fm-elfinder-bundle": "~6",
+        "liip/imagine-bundle": "~1.0",
+        "stfalcon/tinymce-bundle": "1.*",
+        "symfony-cmf/media-bundle": "^1.3",
+        "symfony/framework-bundle": "^2.8",
+        "symfony/form": "^2.8"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.1",
+        "phpunit/phpunit": "^5.6",
+        "twig/twig": "^1.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Toro\\Bundle\\MediaBundle\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Toro\\Bundle\\MediaBundle\\spec\\": "spec/" }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

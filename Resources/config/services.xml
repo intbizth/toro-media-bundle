@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="toro_media.listener.phpcr_image_persistent" lazy="true" class="Toro\Bundle\MediaBundle\EventListener\PhpcrImageMediaPersistent">
+            <argument type="service" id="service_container" />
+            <tag name="doctrine.event_subscriber" piority="128" />
+        </service>
+
+        <service id="toro_media.form.image" parent="cmf_media.form.type.image" class="Toro\Bundle\MediaBundle\Form\Type\ImageType">
+            <tag name="form.type" alias="toro_media_image" />
+        </service>
+
+        <service id="toro_media.form.file" parent="cmf_media.form.type.file" class="Toro\Bundle\MediaBundle\Form\Type\FileType">
+            <tag name="form.type" alias="toro_media_file" />
+        </service>
+
+        <service id="toro_media.form_extension.submitted_data" class="Toro\Bundle\MediaBundle\Form\Extension\RootSubmittedStoreExtension">
+            <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
+        </service>
+
+        <service id="toro_media.twig.fmelfinder_extension" class="Toro\Bundle\MediaBundle\Twig\FMElfinderExtension">
+            <argument id="twig" type="service"/>
+            <argument id="doctrine_phpcr" type="service"/>
+            <argument>%cmf_media.persistence.phpcr.manager_name%</argument>
+            <argument>%cmf_media.persistence.phpcr.media_basepath%</argument>
+            <argument id="twig.extension.stfalcon_tinymce" type="service"/>
+            <tag name="twig.extension"/>
+        </service>
+    </services>
+</container>

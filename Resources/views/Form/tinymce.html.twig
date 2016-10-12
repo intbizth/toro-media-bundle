@@ -1,0 +1,5 @@
+{% block toromce_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' toromce')|trim}) %}
+    {% set attr = attr|merge({'data-theme': tinymce.theme|default('toromce'), rows: attr.rows|default(20)}) %}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock %}

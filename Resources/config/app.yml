@@ -1,0 +1,127 @@
+doctrine:
+    dbal:
+        connections:
+            media:
+                driver:   pdo_mysql
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%_media"
+                user:     "%database_user%"
+                password: "%database_password%"
+                server_version: "%server_version%"
+                charset: utf8
+                default_table_options:
+                    charset: utf8
+                    collate: utf8_unicode_ci
+
+doctrine_phpcr:
+    session:
+        backend:
+            type: doctrinedbal
+            connection: media
+            profiling: "%kernel.debug%"
+            logging: "%kernel.debug%"
+            caches:
+                meta: doctrine.orm.default_metadata_cache
+                nodes: doctrine.orm.default_result_cache
+        workspace: default
+    odm:
+        auto_mapping: true
+        auto_generate_proxy_classes: "%kernel.debug%"
+
+cmf_media:
+    persistence:
+        phpcr:
+            media_basepath: /cms/media
+            enabled: true
+
+twig:
+    form:
+        resources:
+            - 'CmfMediaBundle:Form:fields.html.twig'
+            - 'ToroMediaBundle:Form:fields.html.twig'
+            - 'ToroMediaBundle:Form:tinymce.html.twig'
+
+liip_imagine:
+    filter_sets:
+        # define the filter to be used with the image preview
+        image_upload_thumbnail:
+            data_loader: cmf_media_doctrine_phpcr
+            filters:
+                thumbnail: { size: [100, 100], mode: inset }
+        elfinder_thumbnail:
+            data_loader: cmf_media_doctrine_phpcr
+            filters:
+                thumbnail: { size: [200, 200], mode: inset }
+        strip:
+            data_loader: cmf_media_doctrine_phpcr
+            filters:
+                strip: ~
+
+fm_elfinder:
+    instances:
+        default:
+            locale: "LANG"
+            editor: tinymce4
+            tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"
+            relative_path: false
+            connector:
+                debug: "%kernel.debug%"
+                binds:
+                    - name: 'upload.presave'
+                      value: ['Plugin.Normalizer.onUpLoadPreSave', 'Plugin.Sanitizer.onUpLoadPreSave']
+                    - name: 'mkdir.pre mkfile.pre rename.pre'
+                      value: ['Plugin.Normalizer.cmdPreprocess', 'Plugin.Sanitizer.cmdPreprocess']
+                roots:
+                    media:
+                        driver: cmf_media.adapter.elfinder.phpcr_driver
+                        path: "%cmf_media.persistence.phpcr.media_basepath%"
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif']
+                        upload_max_size: 10M
+                        attributes:
+                            - { pattern: '/sys\-(.*?)/', read: true, write: false, locked: true }
+                        plugins:
+                            - name: 'Sanitizer'
+                              value:
+                                enable: true
+                                targets: ['\','/',':','*','?','"','<','>','|', ' ']
+                                replace: "-"
+
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: false
+    use_callback_tinymce_init: false
+    selector: .toromce
+    language: en
+    theme:
+        toromce:
+            file_browser_callback : elFinderBrowser
+            theme: modern
+            menubar: false
+            convert_urls: false
+            plugins:
+                - 'advlist autolink lists link image charmap print preview hr anchor pagebreak'
+                - 'searchreplace wordcount visualblocks visualchars code fullscreen'
+                - 'insertdatetime media nonbreaking save table contextmenu directionality'
+                - 'emoticons template paste textcolor colorpicker textpattern'
+            toolbar1: 'preview undo redo forecolor backcolor bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent link image media emoticons code'
+            image_advtab: true
+        simple: {  }
+    tinymce_buttons: {  }
+    external_plugins: {  }
+
+# http://stackoverflow.com/questions/17296659
+services:
+    gedmo_references_listener:
+        class: Toro\Bundle\MediaBundle\Gedmo\References\ReferencesListener
+        lazy: true
+        arguments:
+            - "@service_container"
+            #- { entity: "@doctrine.orm.entity_manager", document: "@doctrine_phpcr.odm.document_manager" }
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+#security:
+#    access_control:
+#        - { path: ^/media/efconnect, role: ROLE_USER }
+#        - { path: ^/media/elfinder, role: ROLE_USER }

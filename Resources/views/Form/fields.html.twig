@@ -1,0 +1,49 @@
+{% block toro_media_image_widget %}
+    {% set removeName = '_remove_file_' ~ form.vars.name %}
+
+    {% block toro_media_image_widget_preview %}
+        {% if form.vars.data and form.vars.data.id is defined and form.vars.data.id %}
+            <div class="toro_media_image_widget_preview">
+                <img src="{{ cmf_media_display_url(form.vars.data, { imagine_filter : imagine_filter }) }}" alt=""
+                     {% if not imagine_filter %}width="100"{% endif %} />
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% if form.parent[removeName] is defined %}
+        {{ form_row(form.parent[removeName]) }}
+    {% endif %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+
+{% block toro_media_file_widget %}
+    {% set removeName = '_remove_file_' ~ form.vars.name %}
+
+    {% block cmf_media_file_widget_download %}
+        {% if form.vars.data and form.vars.data.id is defined and form.vars.data.id %}
+            <div class="toro_media_file_widget_link">
+                <a href="{{ cmf_media_download_url(form.vars.data) }}">{{ form.vars.data.name }}</a>
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% if form.parent[removeName] is defined %}
+        {{ form_row(form.parent[removeName]) }}
+    {% endif %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block cmf_media_image_widget %}
+    {% block cmf_media_image_widget_preview %}
+        {% if form.vars.data and form.vars.data.id is defined and form.vars.data.id %}
+            <div class="toro_media_image_widget_preview">
+                <img src="{{ cmf_media_display_url(form.vars.data, { imagine_filter : imagine_filter }) }}" alt="" {% if not imagine_filter %}width="100"{% endif %} />
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {{ form_widget(form) }}
+{% endblock %}
