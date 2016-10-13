@@ -1,7 +1,7 @@
 <script type="text/javascript">
     function elFinderBrowser (field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
-            file:"{{ url('elfinder', {'instance': instance, 'homeFolder': homeFolder}) }}",
+            file:"{{ path('elfinder', {'instance': instance, 'homeFolder': homeFolder}) }}",
             title: "{{ title }}",
             width: {{ width }},
             height: {{ height }},
