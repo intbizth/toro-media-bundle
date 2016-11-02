@@ -105,8 +105,9 @@ stfalcon_tinymce:
                 - 'searchreplace wordcount visualblocks visualchars code fullscreen'
                 - 'insertdatetime media nonbreaking save table contextmenu directionality'
                 - 'emoticons template paste textcolor colorpicker textpattern'
-            toolbar1: 'preview undo redo forecolor backcolor bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent link image media emoticons code'
+            toolbar1: 'removeformat undo redo forecolor backcolor bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent link image media emoticons code'
             image_advtab: true
+            paste_as_text: true
         simple: {  }
     tinymce_buttons: {  }
     external_plugins: {  }
