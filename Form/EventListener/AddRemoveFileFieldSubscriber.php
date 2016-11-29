@@ -4,6 +4,7 @@ namespace Toro\Bundle\MediaBundle\Form\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Cmf\Bundle\MediaBundle\FileInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
@@ -121,7 +122,7 @@ class AddRemoveFileFieldSubscriber implements EventSubscriberInterface
         if ($accessor->getValue($data, $form->getPropertyPath())) {
             // monitor: https://github.com/symfony/symfony/pull/11241
             // now using Toro/Bundle/MediaBundle/Form/Extension/RootSubmittedStoreExtension to solve
-            $parent->add($factory->createNamed(self::removeFileFieldName($form->getName()), 'checkbox', null, array(
+            $parent->add($factory->createNamed(self::removeFileFieldName($form->getName()), CheckboxType::class, null, array(
                 // need first for get submitted data inside file child.
                 //'position' => 'first',
                 'auto_initialize' => false,
