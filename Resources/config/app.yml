@@ -36,11 +36,10 @@ cmf_media:
             enabled: true
 
 twig:
-    form:
-        resources:
-            - 'CmfMediaBundle:Form:fields.html.twig'
-            - 'ToroMediaBundle:Form:fields.html.twig'
-            - 'ToroMediaBundle:Form:tinymce.html.twig'
+    form_themes:
+        - 'CmfMediaBundle:Form:fields.html.twig'
+        - 'ToroMediaBundle:Form:fields.html.twig'
+        - 'ToroMediaBundle:Form:tinymce.html.twig'
 
 liip_imagine:
     filter_sets:
