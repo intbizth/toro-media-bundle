@@ -54,4 +54,19 @@ interface ImageCollectionInterface extends
      * @param string $filter
      */
     public function setFilter($filter);
+
+    /**
+     * @return string
+     */
+    public static function getCollectionOwnerTargetEntity();
+
+    /**
+     * @return string
+     */
+    public function getLink();
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link);
 }

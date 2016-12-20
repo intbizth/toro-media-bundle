@@ -14,8 +14,17 @@
         </id>
 
         <field name="filter" type="string" nullable="true"/>
-        <field name="position" type="integer"/>
-        <field name="imageId" type="integer" nullable="true"/>
+        <field name="position" type="integer" nullable="true"/>
+        <field name="imageId" type="string" nullable="true"/>
+        <field name="link" type="string" nullable="true"/>
+
+        <field name="createdAt" column="created_at" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+
+        <field name="updatedAt" column="updated_at" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
     </mapped-superclass>
 
 </doctrine-mapping>

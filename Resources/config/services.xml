@@ -5,6 +5,10 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="toro_media.listener.event_subscriber.load_metadata" class="Toro\Bundle\MediaBundle\EventListener\ORMLoadMetadataSubscriber">
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
         <service id="toro_media.listener.phpcr_image_persistent" lazy="true" class="Toro\Bundle\MediaBundle\EventListener\PhpcrImageMediaPersistent">
             <argument type="service" id="service_container" />
             <tag name="doctrine.event_subscriber" piority="128" />

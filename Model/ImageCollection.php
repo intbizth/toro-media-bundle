@@ -44,6 +44,11 @@ abstract class ImageCollection implements ImageCollectionInterface
      */
     protected $imageId;
 
+    /**
+     * @var string
+     */
+    protected $link;
+
     public function __construct()
     {
         $this->initializeTranslationsCollection();
@@ -139,6 +144,22 @@ abstract class ImageCollection implements ImageCollectionInterface
         // `image` no mapped for doctrine
         // we need to trig some field for doctrine changed tracker
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
     }
 
     /**

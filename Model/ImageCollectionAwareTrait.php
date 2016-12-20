@@ -4,6 +4,8 @@ namespace Toro\Bundle\MediaBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ExpressionBuilder;
 
 trait ImageCollectionAwareTrait
 {
@@ -52,5 +54,25 @@ trait ImageCollectionAwareTrait
         if ($this->hasImageCollection($imageCollection)) {
             $this->imageCollections->removeElement($imageCollection);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByCode($code)
+    {
+        return $this->getImagesByCode($code)->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCode($code)
+    {
+        $expr = new ExpressionBuilder();
+
+        return $this->imageCollections->matching(new Criteria(
+            $expr->eq('filter', $code)
+        ));
     }
 }

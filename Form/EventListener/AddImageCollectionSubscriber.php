@@ -2,7 +2,6 @@
 
 namespace Toro\Bundle\MediaBundle\Form\EventListener;
 
-use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -11,6 +10,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Util\StringUtil;
 use Toro\Bundle\MediaBundle\Form\ImageCollectionConfigureResolverInterface;
+use Toro\Bundle\MediaBundle\Model\ImageCollectionInterface;
 
 class AddImageCollectionSubscriber implements EventSubscriberInterface
 {
@@ -29,7 +29,7 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
      */
     private $factory;
 
-    public function __construct(FactoryInterface $factory, ImageCollectionConfigureResolverInterface $resolver, $column = 'images')
+    public function __construct(FactoryInterface $factory, ImageCollectionConfigureResolverInterface $resolver, $column = 'imageCollections')
     {
         $this->factory = $factory;
         $this->resolver = $resolver;
@@ -56,14 +56,14 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
         $config = $column->getConfig();
         $imageCollectionKey = StringUtil::fqcnToBlockPrefix($config->getOption('entry_type'));
         $imageCollection = $this->resolver->getConfig($imageCollectionKey);
+        /** @var ImageCollectionInterface $data */
         $data = $event->getData();
 
         if (!empty($imageCollection['create_default']) && !empty($imageCollection['filters'])) {
-            /** @var Collection $images */
-            $images = $data->getImages();
+            $images = $data->getImageCollections();
 
             foreach ($imageCollection['filters'] as $filterKey => $filter) {
-                if ($images->filter(function (PersonalImageInterface $image) use ($filterKey) {
+                if ($images->filter(function (ImageCollectionInterface $image) use ($filterKey) {
                     return $image->getFilter() === $filterKey;
                 })->count()
                 ) {
@@ -73,7 +73,7 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
                 $image = $this->factory->createNew();
                 $image->setFilter($filterKey);
 
-                $data->addImage($image);
+                $data->addImageCollection($image);
             }
         }
     }

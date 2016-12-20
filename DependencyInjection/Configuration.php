@@ -2,6 +2,7 @@
 
 namespace Toro\Bundle\MediaBundle\DependencyInjection;
 
+use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -21,6 +22,10 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('toro_media');
 
         $rootNode
+            ->children()
+                ->scalarNode('driver')->defaultValue(SyliusResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->scalarNode('resources')->defaultValue([])->end()
+            ->end()
             ->children()
                 ->arrayNode('image_collection')
                     ->useAttributeAsKey('name')

@@ -2,18 +2,20 @@
 
 namespace Toro\Bundle\MediaBundle\Form\Type;
 
-use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Doctrine\Common\Util\ClassUtils;
 use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
-use Symfony\Cmf\Bundle\MediaBundle\Form\Type\ImageType;
+use Symfony\Cmf\Bundle\MediaBundle\Form\Type\ImageType as CmfImageType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ImageCollectionType extends AbstractResourceType
+class ImageCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -21,9 +23,8 @@ class ImageCollectionType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('translations', ResourceTranslationsType::class, [
-                'entry_type' => ImageCollectionTranslationType::class,
-                'label' => 'Translations',
+            ->add('image', CmfImageType::class, [
+                'label' => 'Image',
                 'required' => false,
             ])
             ->add('filter', ChoiceType::class, [
@@ -35,10 +36,15 @@ class ImageCollectionType extends AbstractResourceType
                 'label' => 'Ordering',
                 'required' => false,
             ])
-            ->add('image', ImageType::class, [
+            ->add('link', UrlType::class, [
+                'label' => 'Link',
                 'required' => false,
             ])
-
+            ->add('translations', ResourceTranslationsType::class, [
+                'entry_type' => ImageCollectionTranslationType::class,
+                'label' => 'Translations',
+                'required' => false,
+            ])
             ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
                 $uploaded = $data['image'];
