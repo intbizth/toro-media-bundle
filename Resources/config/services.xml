@@ -30,5 +30,9 @@
             <argument id="twig.extension.stfalcon_tinymce" type="service"/>
             <tag name="twig.extension"/>
         </service>
+
+        <service id="toro.form.image_collection_configure_resolver" class="Toro\Bundle\MediaBundle\Form\ImageCollectionConfigureResolver">
+            <argument>%toro_image_collection%</argument>
+        </service>
     </services>
 </container>

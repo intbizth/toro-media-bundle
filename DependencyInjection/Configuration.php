@@ -20,9 +20,22 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('toro_media');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('image_collection')
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('create_default')->defaultTrue()->end()
+                            ->arrayNode('filters')
+                                ->useAttributeAsKey('name')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
