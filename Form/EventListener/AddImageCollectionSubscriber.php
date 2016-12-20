@@ -5,6 +5,7 @@ namespace Toro\Bundle\MediaBundle\Form\EventListener;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -44,6 +45,7 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
+            FormEvents::PRE_SUBMIT => 'preSubmit',
         );
     }
 
@@ -103,6 +105,25 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
         $prototype->remove('filter');
         $prototype->add('filter', ChoiceType::class, array_replace_recursive($options, [
             'choices' => array_flip($imageCollection['filters'])
+        ]));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preSubmit(FormEvent $event)
+    {
+        $column = $event->getForm()->get($this->column);
+        $config = $column->getConfig();
+        $options = $config->getOptions();
+        $imageCollectionKey = StringUtil::fqcnToBlockPrefix($config->getOption('entry_type'));
+        $imageCollection = $this->resolver->getConfig($imageCollectionKey);
+
+        $event->getForm()->remove($this->column);
+        $event->getForm()->add($this->column, CollectionType::class, array_replace_recursive($options, [
+            'entry_options' => [
+                'filters' => array_flip($imageCollection['filters'])
+            ]
         ]));
     }
 }

@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageCollectionType extends AbstractType
 {
@@ -29,7 +30,7 @@ class ImageCollectionType extends AbstractType
             ])
             ->add('filter', ChoiceType::class, [
                 'label' => 'Filter',
-                'choices' => [],
+                'choices' => $options['filters'],
                 'required' => false,
             ])
             ->add('position', IntegerType::class, [
@@ -67,6 +68,16 @@ class ImageCollectionType extends AbstractType
                 }
             });
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'filters' => []
+        ]);
     }
 
     /**
