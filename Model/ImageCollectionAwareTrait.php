@@ -57,7 +57,9 @@ trait ImageCollectionAwareTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $code
+     *
+     * @return ImageCollectionInterface
      */
     public function findOneByCode($code)
     {
@@ -65,7 +67,9 @@ trait ImageCollectionAwareTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $code
+     *
+     * @return Collection|ImageCollectionInterface[]
      */
     public function findByCode($code)
     {

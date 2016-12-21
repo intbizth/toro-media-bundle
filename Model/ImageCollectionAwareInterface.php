@@ -36,14 +36,14 @@ interface ImageCollectionAwareInterface
     /**
      * @param string $code
      *
-     * @return Collection|self[]
+     * @return Collection|ImageCollectionInterface[]
      */
     public function findByCode($code);
 
     /**
      * @param string $code
      *
-     * @return self
+     * @return ImageCollectionInterface
      */
     public function findOneByCode($code);
 }
