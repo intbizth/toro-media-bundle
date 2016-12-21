@@ -168,7 +168,7 @@ abstract class ImageCollection implements ImageCollectionInterface
     public function getMediaMetaReferences()
     {
         return array(
-            new MediaReference('/peronals/'.$this->collectionOwner->getId(), 'imageId', $this->imageId, $this->image),
+            new MediaReference('/images', 'imageId', $this->imageId, $this->image),
         );
     }
 }
