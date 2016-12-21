@@ -63,7 +63,7 @@ trait ImageCollectionAwareTrait
      */
     public function findOneByCode($code)
     {
-        return $this->getImagesByCode($code)->first();
+        return $this->findByCode($code)->first();
     }
 
     /**
