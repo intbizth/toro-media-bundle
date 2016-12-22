@@ -14,7 +14,7 @@ trait ImageCollectionAwareTrait
      */
     protected $imageCollections;
 
-    public function __construct()
+    public function initializeImageCollection()
     {
         $this->imageCollections = new ArrayCollection();
     }
