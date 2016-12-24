@@ -86,7 +86,9 @@ class PhpcrImageMediaPersistent implements EventSubscriber
                     $meta->media->setParent($parent);
                 }
 
-                $dm->persist($meta->media);
+                if (!$dm->find(null, $meta->refValue)) {
+                    $dm->persist($meta->media);
+                }
             } else {
                 // reset reference id, Gedmo references no reset automatic
                 $entityReflect = ClassUtils::newReflectionObject($entity);
