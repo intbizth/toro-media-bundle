@@ -55,7 +55,15 @@
             <div class="col-md-6">{{ form_row(form.position) }}</div>
             <div class="col-md-6">{{ form_row(form.filter) }}</div>
         </div>
+
         {{ form_row(form.link) }}
-        {{ form_row(form.translations) }}
+
+        {% if form.caption is defined %}
+            {{ form_row(form.caption) }}
+        {% endif %}
+
+        {% if form.translations is defined %}
+            {{ form_row(form.translations) }}
+        {% endif %}
     </div>
 {% endblock %}
