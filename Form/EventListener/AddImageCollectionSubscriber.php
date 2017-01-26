@@ -61,7 +61,7 @@ class AddImageCollectionSubscriber implements EventSubscriberInterface
         /** @var ImageCollectionInterface $data */
         $data = $event->getData();
 
-        if (!empty($imageCollection['create_default']) && !empty($imageCollection['filters'])) {
+        if ($data && !empty($imageCollection['create_default']) && !empty($imageCollection['filters'])) {
             $images = $data->getImageCollections();
 
             foreach ($imageCollection['filters'] as $filterKey => $filter) {
