@@ -60,10 +60,32 @@ trait ImageCollectionAwareTrait
      * @param string $code
      *
      * @return ImageCollectionInterface
+     * @deprecated
      */
     public function findOneByCode($code)
     {
-        return $this->findByCode($code)->first();
+        return $this->findOneImageByCode($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return ImageCollectionInterface
+     */
+    public function findOneImageByCode($code)
+    {
+        return $this->findImageCollectionByCode($code)->first();
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Collection|ImageCollectionInterface[]
+     * @deprecated
+     */
+    public function findByCode($code)
+    {
+        return $this->findImageCollectionByCode($code);
     }
 
     /**
@@ -71,7 +93,7 @@ trait ImageCollectionAwareTrait
      *
      * @return Collection|ImageCollectionInterface[]
      */
-    public function findByCode($code)
+    public function findImageCollectionByCode($code)
     {
         $expr = new ExpressionBuilder();
 

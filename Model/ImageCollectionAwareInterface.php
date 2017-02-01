@@ -37,6 +37,7 @@ interface ImageCollectionAwareInterface
      * @param string $code
      *
      * @return Collection|ImageCollectionInterface[]
+     * @deprecated
      */
     public function findByCode($code);
 
@@ -44,6 +45,21 @@ interface ImageCollectionAwareInterface
      * @param string $code
      *
      * @return ImageCollectionInterface
+     * @deprecated
      */
     public function findOneByCode($code);
+
+    /**
+     * @param string $code
+     *
+     * @return Collection|ImageCollectionInterface[]
+     */
+    public function findImageCollectionByCode($code);
+
+    /**
+     * @param string $code
+     *
+     * @return ImageCollectionInterface
+     */
+    public function findOneImageByCode($code);
 }
