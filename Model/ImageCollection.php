@@ -51,6 +51,7 @@ abstract class ImageCollection implements ImageCollectionInterface
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->initializeTranslationsCollection();
     }
 
