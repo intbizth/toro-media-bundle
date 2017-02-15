@@ -32,7 +32,7 @@ class ORMLoadMetadataSubscriber implements EventSubscriber
         $classMetadata = $eventArgs->getClassMetadata();
         $reflection = $classMetadata->reflClass;
 
-        if (!$reflection || $reflection->isAbstract()) {
+        if (!$reflection || $reflection->isAbstract() || $classMetadata->isMappedSuperclass) {
             return;
         }
 
