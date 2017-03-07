@@ -8,6 +8,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Toro\Bundle\MediaBundle\Doctrine\ODM\Phpcr\DocumentManagerHelper;
+use Toro\Bundle\MediaBundle\Meta\MediaReference;
 use Toro\Bundle\MediaBundle\Model\MediaAwareInterface;
 
 class PhpcrImageMediaPersistent implements EventSubscriber
@@ -30,6 +31,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
         return array(
             'prePersist',
             'preUpdate',
+            'preRemove',
         );
     }
 
@@ -50,6 +52,14 @@ class PhpcrImageMediaPersistent implements EventSubscriber
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $this->flushMedia($args, true);
+    }
+
+    /**
      * @return DocumentManagerInterface
      */
     private function getManager()
@@ -59,8 +69,10 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     *
+     * @param bool $preRemove
      */
-    private function flushMedia(LifecycleEventArgs $args)
+    private function flushMedia(LifecycleEventArgs $args, $preRemove = false)
     {
         $entity = $args->getObject();
 
@@ -71,6 +83,12 @@ class PhpcrImageMediaPersistent implements EventSubscriber
         $dm = $this->getManager();
 
         foreach ($entity->getMediaMetaReferences() as $meta) {
+            if ($preRemove) {
+                $this->removeImage($dm, $meta);
+
+                continue;
+            }
+
             $refId = null;
 
             if ($meta->media) {
@@ -98,13 +116,21 @@ class PhpcrImageMediaPersistent implements EventSubscriber
             }
 
             if ($meta->refValue && $meta->refValue !== ($meta->media ? $meta->media->getId() : null)) {
-                if ($olderImage = $dm->find(null, $meta->refValue)) {
-                    // TODO: check linked reference before remove, who using it should have checker ref service
-                    $dm->remove($olderImage);
-                }
+                $this->removeImage($dm, $meta);
             }
         }
 
         $dm->flush();
+    }
+
+    /**
+     * @param DocumentManagerInterface $dm
+     * @param MediaReference $meta
+     */
+    private function removeImage(DocumentManagerInterface $dm, MediaReference $meta)
+    {
+        if ($olderImage = $dm->find(null, $meta->refValue)) {
+            $dm->remove($olderImage);
+        }
     }
 }
