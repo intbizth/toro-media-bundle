@@ -79,6 +79,11 @@ class AddRemoveFileFieldSubscriber implements EventSubscriberInterface
         }
 
         $parent = $event->getForm()->getParent();
+
+        if (!$parent->has('_submitted_data')) {
+            return;
+        }
+
         $submittedData = (array) $parent->get('_submitted_data')->getData();
         $isRemoveFileField = self::removeFileFieldName($event->getForm()->getName());
 
@@ -93,7 +98,7 @@ class AddRemoveFileFieldSubscriber implements EventSubscriberInterface
         // set file back to model prevent validation fail
         if (empty($submittedData[$isRemoveFileField])) {
             $event->setData($this->preSubmitFile);
-            
+
             return;
         }
     }
