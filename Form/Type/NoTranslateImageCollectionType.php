@@ -40,6 +40,10 @@ class NoTranslateImageCollectionType extends AbstractType
                 'label' => 'Link',
                 'required' => false,
             ])
+            ->add('caption', TextType::class, [
+                'label' => 'Caption',
+                'required' => false,
+            ])
             ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
                 $data = $event->getData();
                 $uploaded = $data['image'];
