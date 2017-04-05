@@ -8,7 +8,6 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Toro\Bundle\MediaBundle\Model\ImageCollectionAwareInterface;
-use Toro\Bundle\MediaBundle\Model\ImageCollectionAwareTrait;
 use Toro\Bundle\MediaBundle\Model\ImageCollectionInterface;
 
 class ORMLoadMetadataSubscriber implements EventSubscriber
@@ -33,7 +32,7 @@ class ORMLoadMetadataSubscriber implements EventSubscriber
         $classMetadata = $eventArgs->getClassMetadata();
         $reflection = $classMetadata->reflClass;
 
-        if (!in_array(ImageCollectionAwareTrait::class, array_keys($reflection->getTraits()))) {
+        if (!$reflection || $reflection->isAbstract() || $classMetadata->isMappedSuperclass) {
             return;
         }
 
