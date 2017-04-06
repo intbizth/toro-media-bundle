@@ -34,4 +34,14 @@ class MediaReference
         $this->path = $path;
         $this->media = $media;
     }
+
+    /**
+     * @param ImageInterface|\Closure|null $image
+     *
+     * @return ImageInterface|null
+     */
+    public static function getImage($image)
+    {
+        return $image instanceof ImageInterface ? call_user_func($image) : $image;
+    }
 }
