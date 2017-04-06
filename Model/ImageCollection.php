@@ -130,9 +130,17 @@ abstract class ImageCollection implements ImageCollectionInterface
     /**
      * {@inheritdoc}
      */
+    public function getImageId()
+    {
+        return $this->imageId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getImage()
     {
-        return $this->image;
+        return MediaReference::getImage($this->image);
     }
 
     /**

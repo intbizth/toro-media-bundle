@@ -36,6 +36,11 @@ interface ImageCollectionInterface extends
     public function setCollectionOwner(ImageCollectionAwareInterface $collectionOwner);
 
     /**
+     * @return string
+     */
+    public function getImageId();
+
+    /**
      * @return ImageInterface
      */
     public function getImage();
