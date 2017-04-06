@@ -42,6 +42,6 @@ class MediaReference
      */
     public static function getImage($image)
     {
-        return $image instanceof ImageInterface ? call_user_func($image) : $image;
+        return $image instanceof \Closure ? call_user_func($image) : $image;
     }
 }
