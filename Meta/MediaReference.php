@@ -32,7 +32,7 @@ class MediaReference
         $this->refName = $refName;
         $this->refValue = $refValue;
         $this->path = $path;
-        $this->media = $media;
+        $this->media = static::getImage($media);
     }
 
     /**
