@@ -114,16 +114,10 @@ stfalcon_tinymce:
 
 # http://stackoverflow.com/questions/17296659
 services:
-    gedmo_references_listener:
+    toro.gedmo_references_listener:
         class: Toro\Bundle\MediaBundle\Gedmo\References\ReferencesListener
         lazy: true
         arguments:
-            - "@service_container"
-            #- { entity: "@doctrine.orm.entity_manager", document: "@doctrine_phpcr.odm.document_manager" }
+            - { entity: "@doctrine.orm.entity_manager", document: "@doctrine_phpcr.odm.document_manager" }
         tags:
             - { name: doctrine.event_subscriber, connection: default }
-
-#security:
-#    access_control:
-#        - { path: ^/media/efconnect, role: ROLE_USER }
-#        - { path: ^/media/elfinder, role: ROLE_USER }
