@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use PHPCR\ItemNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Toro\Bundle\MediaBundle\Doctrine\ODM\Phpcr\DocumentManagerHelper;
 use Toro\Bundle\MediaBundle\Meta\MediaReference;
@@ -56,7 +57,9 @@ class PhpcrImageMediaPersistent implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        $this->flushMedia($args, true);
+        try {
+            $this->flushMedia($args, true);
+        } catch (ItemNotFoundException $e) {}
     }
 
     /**
