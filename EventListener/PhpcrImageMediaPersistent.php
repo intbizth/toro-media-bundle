@@ -6,7 +6,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use PHPCR\ItemNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Toro\Bundle\MediaBundle\Doctrine\ODM\Phpcr\DocumentManagerHelper;
 use Toro\Bundle\MediaBundle\Meta\MediaReference;
@@ -57,9 +56,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        try {
-            $this->flushMedia($args, true);
-        } catch (ItemNotFoundException $e) {}
+        $this->flushMedia($args, true);
     }
 
     /**
@@ -95,9 +92,12 @@ class PhpcrImageMediaPersistent implements EventSubscriber
             $refId = null;
 
             if ($meta->media) {
+                if ($meta->refValue && $meta->refValue !== ($meta->media ? $meta->media->getId() : null)) {
+                    $this->removeImage($dm, $meta);
+                }
+
                 $rootId = $this->container
-                    ->getParameter('cmf_media.persistence.phpcr.media_basepath')
-                ;
+                    ->getParameter('cmf_media.persistence.phpcr.media_basepath');
 
                 if ($meta->path) {
                     $path = DocumentManagerHelper::cleanPath($rootId, $meta->path);
@@ -109,7 +109,6 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
                 if (!$dm->find(null, $meta->refValue)) {
                     $dm->persist($meta->media);
-                    $dm->flush($meta->media);
                 }
             } else {
                 // reset reference id, Gedmo references no reset automatic
@@ -118,11 +117,9 @@ class PhpcrImageMediaPersistent implements EventSubscriber
                 $refKeyReflect->setAccessible(true);
                 $refKeyReflect->setValue($entity, null);
             }
-
-            if ($meta->refValue && $meta->refValue !== ($meta->media ? $meta->media->getId() : null)) {
-                $this->removeImage($dm, $meta);
-            }
         }
+
+        $dm->flush();
     }
 
     /**
