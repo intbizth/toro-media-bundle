@@ -109,6 +109,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
                 if (!$dm->find(null, $meta->refValue)) {
                     $dm->persist($meta->media);
+                    $dm->flush($meta->media);
                 }
             } else {
                 // reset reference id, Gedmo references no reset automatic
@@ -122,8 +123,6 @@ class PhpcrImageMediaPersistent implements EventSubscriber
                 $this->removeImage($dm, $meta);
             }
         }
-
-        $dm->flush();
     }
 
     /**
@@ -134,6 +133,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
     {
         if ($olderImage = $dm->find(null, $meta->refValue)) {
             $dm->remove($olderImage);
+            $dm->flush($olderImage);
         }
     }
 }
