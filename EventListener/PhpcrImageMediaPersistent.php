@@ -93,7 +93,8 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
             if ($meta->media) {
                 if ($meta->refValue && $meta->refValue !== ($meta->media ? $meta->media->getId() : null)) {
-                    $this->removeImage($dm, $meta);
+                    // FIXME: remove older image still buggy
+                    //$this->removeImage($dm, $meta);
                 }
 
                 $rootId = $this->container
