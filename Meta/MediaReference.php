@@ -39,8 +39,19 @@ class MediaReference
      * @param ImageInterface|\Closure|null $image
      *
      * @return ImageInterface|null
+     * @deprecated use getMedia
      */
     public static function getImage($image)
+    {
+        return self::getMedia($image);
+    }
+
+    /**
+     * @param FileInterface|ImageInterface|\Closure|null $image
+     *
+     * @return FileInterface|ImageInterface|null
+     */
+    public static function getMedia($media)
     {
         return $image instanceof \Closure ? call_user_func($image) : $image;
     }
