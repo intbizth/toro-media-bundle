@@ -4,6 +4,7 @@ namespace Toro\Bundle\MediaBundle\Form\Type;
 
 use Symfony\Cmf\Bundle\MediaBundle\Form\Type\FileType as BaseFileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Toro\Bundle\MediaBundle\Form\DataTransformer\LazyMediaTransformer;
 use Toro\Bundle\MediaBundle\Form\EventListener\AddRemoveFileFieldSubscriber;
 
 class FileType extends BaseFileType
@@ -24,5 +25,6 @@ class FileType extends BaseFileType
         parent::buildForm($builder, $options);
 
         $builder->addEventSubscriber(new AddRemoveFileFieldSubscriber());
+        $builder->addViewTransformer(new LazyMediaTransformer());
     }
 }
