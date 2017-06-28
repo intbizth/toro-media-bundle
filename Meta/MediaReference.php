@@ -53,6 +53,6 @@ class MediaReference
      */
     public static function getMedia($media)
     {
-        return $image instanceof \Closure ? call_user_func($image) : $image;
+        return $media instanceof \Closure ? call_user_func($media) : $media;
     }
 }
