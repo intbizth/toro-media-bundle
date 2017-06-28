@@ -47,7 +47,7 @@ class MediaReference
     }
 
     /**
-     * @param FileInterface|ImageInterface|\Closure|null $image
+     * @param FileInterface|ImageInterface|\Closure|null $media
      *
      * @return FileInterface|ImageInterface|null
      */
