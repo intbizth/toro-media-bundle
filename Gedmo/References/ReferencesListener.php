@@ -75,7 +75,7 @@ class ReferencesListener extends MappedEventSubscriber
                 if (isset($mapping['identifier'])) {
                     $referencedObjectId = $meta->getFieldValue($object, $mapping['identifier']);
                     if (null !== $referencedObjectId) {
-                        if ($mapping['lazy']) {
+                        if (@$mapping['lazy']) {
                             if (null !== $referencedObjectId) {
                                 $property->setValue($object, function () use ($ea, $mapping, $referencedObjectId) {
                                     return $ea->getSingleReference(
