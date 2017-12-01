@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use PHPCR\PathNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Toro\Bundle\MediaBundle\Doctrine\ODM\Phpcr\DocumentManagerHelper;
 use Toro\Bundle\MediaBundle\Meta\MediaReference;
@@ -93,8 +94,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
             if ($meta->media) {
                 if ($meta->refValue && $meta->refValue !== ($meta->media ? $meta->media->getId() : null)) {
-                    // FIXME: remove older image still buggy
-                    try { $this->removeImage($dm, $meta); } catch (\Exception $e) {}
+                    $this->removeImage($dm, $meta);
                 }
 
                 $rootId = $this->container
@@ -129,9 +129,14 @@ class PhpcrImageMediaPersistent implements EventSubscriber
      */
     private function removeImage(DocumentManagerInterface $dm, MediaReference $meta)
     {
-        if ($olderImage = $dm->find(null, $meta->refValue)) {
-            $dm->remove($olderImage);
-            $dm->flush($olderImage);
+        // FIXME: remove older image with same name still buggy
+        try {
+            if ($olderImage = $dm->find(null, $meta->refValue)) {
+                $dm->remove($olderImage);
+                $dm->flush($olderImage);
+            }
+        } catch (\Exception $e) {
+            // ignore error
         }
     }
 }
