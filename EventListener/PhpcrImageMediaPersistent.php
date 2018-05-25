@@ -105,7 +105,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
                     $dirs = DocumentManagerHelper::mkdirs($dm, strtolower($path));
                     $parent = end($dirs);
 
-                    try { $meta->media->setParent($parent); } catch (\Exception $e) { return; };
+                    $meta->media->setParent($parent);
                 }
 
                 if (!$dm->find(null, $meta->refValue)) {
