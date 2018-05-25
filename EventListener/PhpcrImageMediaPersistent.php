@@ -85,7 +85,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
         foreach ($entity->getMediaMetaReferences() as $meta) {
             if ($preRemove && $meta->refValue) {
-                $this->removeImage($dm, $meta);
+                //$this->removeImage($dm, $meta);
 
                 continue;
             }
@@ -105,7 +105,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
                     $dirs = DocumentManagerHelper::mkdirs($dm, strtolower($path));
                     $parent = end($dirs);
 
-                    $meta->media->setParent($parent);
+                    try { $meta->media->setParent($parent); } catch (\Exception $e) { return; };
                 }
 
                 if (!$dm->find(null, $meta->refValue)) {
