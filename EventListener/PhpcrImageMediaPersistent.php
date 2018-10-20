@@ -82,7 +82,7 @@ class PhpcrImageMediaPersistent implements EventSubscriber
 
         $dm = $this->getManager();
 
-        foreach ($entity->getMediaMetaReferences() as $meta) {
+        foreach ((array) $entity->getMediaMetaReferences() as $meta) {
             if ($preRemove && $meta->refValue) {
                 $this->removeImage($dm, $meta);
 
